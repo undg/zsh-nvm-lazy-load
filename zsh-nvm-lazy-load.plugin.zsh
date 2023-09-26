@@ -28,6 +28,12 @@ npm() {
     npm "$@"
 }
 
+pnpm() {
+    unset -f pnpm
+    load-nvm
+    pnpm "$@"
+}
+
 yarn() {
     unset -f yarn
     load-nvm
