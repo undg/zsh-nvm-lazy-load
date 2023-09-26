@@ -1,8 +1,9 @@
-Plugin that will lazy load [nvm](https://github.com/nvm-sh/nvm).
+Here's your revised text in Markdown format:
 
-Running `nvm.sh` in your `.zshrc` is destroying startup time. This plugin will mitigate that.
+This is a plugin that will lazy load [nvm](https://github.com/nvm-sh/nvm).
 
-Commands `nvm`, `node`, `yarn` and `npm` will load `nvm.sh` on their first invocation,
-posing no start up time penalty for the shells that aren't going to use them at all.
+Running `nvm.sh` in your `.zshrc` can significantly slow down startup time. This plugin is designed to mitigate that issue.
 
-There is only single time penalty for shell. Every next time you will run any of commands above, `nvm` will be already initialized.
+The commands `nvm`, `node`, `yarn`, `pnpm`, and `npm` will load `nvm.sh` upon their first invocation, thereby avoiding any startup time penalty for shells that aren't going to use them at all.
+
+There is only a single time penalty for the shell. After the first time you run any of the commands above, `nvm` will already be initialized, so there will be no additional delay.
