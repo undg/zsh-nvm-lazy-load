@@ -1,5 +1,3 @@
-Here's your revised text in Markdown format:
-
 This is a plugin that will lazy load [nvm](https://github.com/nvm-sh/nvm).
 
 Running `nvm.sh` in your `.zshrc` can significantly slow down startup time. This plugin is designed to mitigate that issue.
