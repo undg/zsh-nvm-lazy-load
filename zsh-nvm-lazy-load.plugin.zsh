@@ -28,6 +28,12 @@ npm() {
     npm "$@"
 }
 
+npx() {
+    unset -f npx
+    load-nvm
+    npx "$@"
+}
+
 pnpm() {
     unset -f pnpm
     load-nvm
