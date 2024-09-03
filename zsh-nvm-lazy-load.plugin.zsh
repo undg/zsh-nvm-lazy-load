@@ -5,44 +5,30 @@
 # posing no start up time penalty for the shells that aren't going to use them at all.
 # There is only single time penalty for one shell.
 
+typeset -ga lazyLoadLabels=(nvm node npm npx pnpm yarn pnpx)
+
+set-labels() {
+    for label in "${lazyLoadLabels[@]}"; do
+        eval "$label() { work; command $label \"\$@\"; }"
+    done
+}
+
+remove-all-lazyLoadLabels() {
+    for label in $lazyLoadLabels; do
+        unset -f $label
+    done
+    unset -v lazyLoadLabels
+}
+
 load-nvm() {
     export NVM_DIR=~/.nvm
     [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+    [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 }
 
-nvm() {
-    unset -f nvm
+work() {
     load-nvm
-    nvm "$@"
+    remove-all-lazyLoadLabels
 }
 
-node() {
-    unset -f node
-    load-nvm
-    node "$@"
-}
-
-npm() {
-    unset -f npm
-    load-nvm
-    npm "$@"
-}
-
-npx() {
-    unset -f npx
-    load-nvm
-    npx "$@"
-}
-
-pnpm() {
-    unset -f pnpm
-    load-nvm
-    pnpm "$@"
-}
-
-yarn() {
-    unset -f yarn
-    load-nvm
-    yarn "$@"
-}
-
+set-labels
