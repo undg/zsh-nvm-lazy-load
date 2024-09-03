@@ -46,3 +46,8 @@ yarn() {
     yarn "$@"
 }
 
+bun() {
+    unset -f bun
+    load-nvm
+    bun "$@"
+}
