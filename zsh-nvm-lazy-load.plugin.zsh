@@ -5,7 +5,7 @@
 # posing no start up time penalty for the shells that aren't going to use them at all.
 # There is only single time penalty for one shell.
 
-typeset -ga lazyLoadLabels=(nvm node npm npx pnpm yarn pnpx)
+typeset -ga lazyLoadLabels=(nvm node npm npx pnpm yarn pnpx bun)
 
 set-labels() {
     for label in "${lazyLoadLabels[@]}"; do
