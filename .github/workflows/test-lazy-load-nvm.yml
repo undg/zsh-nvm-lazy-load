@@ -77,4 +77,6 @@ jobs:
             exit 1
           fi
 
+          exec bash
+
           echo "All tests PASSED!"
