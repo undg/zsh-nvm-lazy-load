@@ -18,6 +18,9 @@ jobs:
       with:
         node-version: '20'  # Specify the Node.js version to use
 
+    - name: Setup upterm session
+      uses: lhotari/action-upterm@v1
+
     - name: Run tests
       shell: zsh
       run: |
