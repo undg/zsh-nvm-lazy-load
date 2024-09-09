@@ -20,14 +20,15 @@ jobs:
 
     # - name: Setup upterm session
     #   uses: lhotari/action-upterm@v1
-    # - name: Setup tmate session
-    #   uses: mxschmitt/action-tmate@v3
+    - name: Setup tmate session
+      uses: mxschmitt/action-tmate@v3
 
     - name: Run tests
       shell: bash # there is no zsh shell in github
       run: |
         # run command in zsh shel
-        zsh -c '
+        touch ~/.zshrc
+        exec zsh 
         # Source the script from the repository
         source ./zsh-nvm-lazy-load.plugin.zsh
 
@@ -58,5 +59,4 @@ jobs:
         fi
 
         echo "All tests passed!"
-        '
 
