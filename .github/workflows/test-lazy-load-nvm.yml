@@ -1,0 +1,80 @@
+name: Test Lazy Load NVM
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Zsh
+        run: sudo apt-get install zsh
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Specify the Node.js version to use
+
+      # - name: Setup upterm session
+      #   uses: lhotari/action-upterm@v1
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
+
+      - name: Run tests
+        shell: bash # there is no zsh shell in github
+        run: |
+          # run command in zsh shel
+          touch ~/.zshrc
+          exec zsh 
+
+          FAIL=0
+
+          # Test if NVM is not loaded initially
+          if type nvm &> /dev/null; then
+            echo "Error: NVM should not be loaded initially"
+            FAIL=1
+          fi
+
+          # Source the script from the repository
+          source ./zsh-nvm-lazy-load.plugin.zsh
+
+          # Invoke a lazy-loaded command
+          node -v
+
+          # Test if NVM is loaded after invoking a lazy-loaded command
+          if ! type nvm &> /dev/null; then
+            echo "Error: NVM should be loaded after invoking a lazy-loaded command"
+            FAIL=1
+          fi
+
+          # Test if the lazy-loaded labels are removed
+          if ! type node &> /dev/null; then
+            echo "Error: Node command should be available after invoking it"
+            FAIL=1
+          fi
+
+          if ! type npm &> /dev/null; then
+            echo "Error: NPM command should be available after invoking it"
+            FAIL=1
+          fi
+
+          if ! [[ "$(type yarn)" =~ "yarn is a shell function from ./zsh-nvm-lazy-load.plugin.zsh" ]]; then
+            echo "Error: Yarn command should be available after invoking it"
+            FAIL=1
+          fi
+
+          if ! [[ "$(type pnpm)" =~ "pnpm is a shell function from ./zsh-nvm-lazy-load.plugin.zsh" ]]; then
+            echo "Error: Pnpm command should be available after invoking it"
+            FAIL=1
+          fi
+
+
+          if FAIL == 1; then
+            echo "Test(s) FAILED!"
+            exit 1
+          fi
+
+          echo "All tests PASSED!"
