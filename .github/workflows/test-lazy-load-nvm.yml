@@ -1,0 +1,54 @@
+name: Test Lazy Load NVM
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Zsh
+      run: sudo apt-get install zsh
+
+    - name: Set up Node.js environment
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'  # Specify the Node.js version to use
+
+    - name: Run tests
+      shell: zsh
+      run: |
+        # Source the script from the repository
+        source ./lazy-load-nvm.sh
+
+        # Test if NVM is not loaded initially
+        if type nvm &> /dev/null; then
+          echo "Error: NVM should not be loaded initially"
+          exit 1
+        fi
+
+        # Invoke a lazy-loaded command
+        node -v
+
+        # Test if NVM is loaded after invoking a lazy-loaded command
+        if ! type nvm &> /dev/null; then
+          echo "Error: NVM should be loaded after invoking a lazy-loaded command"
+          exit 1
+        fi
+
+        # Test if the lazy-loaded labels are removed
+        if ! type node &> /dev/null; then
+          echo "Error: Node command should be available after invoking it"
+          exit 1
+        fi
+
+        if ! type npm &> /dev/null; then
+          echo "Error: NPM command should be available after invoking it"
+          exit 1
+        fi
+
+        echo "All tests passed!"
+
